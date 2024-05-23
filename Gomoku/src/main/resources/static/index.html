@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <button onclick="connect()">Connect</button>
+    <button onclick="sendMessage()">Send Message</button>
+    <div id="messages"></div>
+
+    <script>
+        var stompClient = null;
+
+        function connect() {
+            console.log('Attempting to connect to WebSocket...');
+            var socket = new SockJS('http://localhost:8080/gomoku-websocket');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+                document.getElementById('messages').innerHTML += '<p>Connected</p>';
+
+                stompClient.subscribe('/topic/gameState', function(messageOutput) {
+                    var message = JSON.parse(messageOutput.body);
+                    console.log('Message received: ', message);
+                    document.getElementById('messages').innerHTML += '<p>Received: ' + message.row + ' - ' + message.column + '</p>';
+                });
+            }, function(error) {
+                console.error('STOMP error: ' + error);
+                document.getElementById('messages').innerHTML += '<p>Error: ' + error + '</p>';
+            });
+        }
+
+        function sendMessage() {
+            var move = {
+                row: 1,
+                column: 1,
+                playerSymbol: 'X'
+            };
+            if (stompClient && stompClient.connected) {
+                stompClient.send("/app/move", {}, JSON.stringify(move));
+                document.getElementById('messages').innerHTML += '<p>Sent: ' + move.row + ' - ' + move.column + '</p>';
+            } else {
+                console.error('Cannot send message: not connected');
+                document.getElementById('messages').innerHTML += '<p>Cannot send message: not connected</p>';
+            }
+        }
+    </script>
+</body>
+</html>

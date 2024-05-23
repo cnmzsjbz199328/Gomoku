@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <button onclick="connect()">Connect</button>
+    <button onclick="sendMessage()">Send Message</button>
+    <div id="messages"></div>
+
+    <script>
+        var socket;
+        function connect() {
+            socket = new WebSocket('ws://localhost:8080/ws');
+            socket.onopen = function() {
+                document.getElementById('messages').innerHTML += '<p>Connected</p>';
+            };
+            socket.onmessage = function(event) {
+                var message = JSON.parse(event.data);
+                document.getElementById('messages').innerHTML += '<p>Received: ' + message.player + ' - (' + message.x + ', ' + message.y + ')</p>';
+            };
+            socket.onclose = function() {
+                document.getElementById('messages').innerHTML += '<p>Disconnected</p>';
+            };
+        }
+
+        function sendMessage() {
+            var move = {
+                player: 'Player1',
+                x: 1,
+                y: 1
+            };
+            socket.send(JSON.stringify(move));
+            document.getElementById('messages').innerHTML += '<p>Sent: ' + move.player + ' - (' + move.x + ', ' + move.y + ')</p>';
+        }
+    </script>
+</body>
+</html>
