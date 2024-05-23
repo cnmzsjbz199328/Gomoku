@@ -1,0 +1,2 @@
+# Gomoku
+The first game
