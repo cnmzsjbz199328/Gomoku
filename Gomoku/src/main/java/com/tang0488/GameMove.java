@@ -8,10 +8,10 @@ public class GameMove {
     public GameMove() {
     }
 
-    public GameMove(int row, int column, char playerSymbol) {
+    public GameMove(int row, int column, String playerSymbol) {
         this.row = row;
         this.column = column;
-        this.playerSymbol = playerSymbol;
+        this.playerSymbol = playerSymbol.charAt(0);
     }
 
     // Getter and Setter methods
@@ -39,4 +39,3 @@ public class GameMove {
         this.playerSymbol = playerSymbol;
     }
 }
-

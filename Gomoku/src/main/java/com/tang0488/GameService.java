@@ -18,7 +18,7 @@ public class GameService {
 
     public GameMove processMove(GameMove move) throws Exception {
         if (board[move.getRow()][move.getColumn()] == ' ') {
-            board[move.getRow()][move.getColumn()] = move.getPlayerSymbol().charAt(0);
+            board[move.getRow()][move.getColumn()] = move.getPlayerSymbol();
             currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
         } else {
             throw new Exception("Invalid move");
