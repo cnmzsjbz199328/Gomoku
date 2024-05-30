@@ -10,3 +10,4 @@ public class GomokuApplication {
         SpringApplication.run(GomokuApplication.class, args);
     }
 }
+

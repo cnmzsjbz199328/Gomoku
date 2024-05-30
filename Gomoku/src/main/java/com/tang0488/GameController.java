@@ -14,10 +14,7 @@ public class GameController {
 	@MessageMapping("/move")
 	@SendTo("/topic/gameState")
 	public GameMove processMove(GameMove move) {
-		// 增加日志信息
 		logger.info("Processing move: row = {}, column = {}", move.getRow(), move.getColumn());
-		System.out.println("处理移动: 行 " + move.getRow() + ", 列 " + move.getColumn());
-		// 假设每次移动都有效，并返回该移动
 		return move;
 	}
 }
